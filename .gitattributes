@@ -1,0 +1,57 @@
+####################################################
+#  SQUINT Sparse Quad Union Indexed Nibble Trie:   #
+#  https://github.com/idle-PB/SQUINT               #
+####################################################
+
+# Set Git's default behaviour to text-files autodetection, in case users
+# don't have `core.autocrlf` set:
+* text=auto
+
+# Explicitly declare commonly used file extensions as either text or binary,
+# and tell Git how to handle line-endings normalization.
+
+
+## PureBasic Files
+##################
+[attr]PureBasic text linguist-language=PureBasic
+*.cfg   text linguist-generated=true
+*.pb    PureBasic
+*.pbf   PureBasic
+*.pbi   PureBasic
+*.pbp   linguist-language=XML linguist-generated=true
+
+
+## Shell Scripts
+################
+*.bat    text eol=crlf
+*.com    text eol=crlf
+*.sh     text eol=lf
+
+
+## Repository Configuration
+###########################
+.editorconfig    text eol=lf
+.travis.yml      text eol=lf
+.gitattributes   text eol=lf
+.gitconfig       text eol=lf
+.gitignore       text eol=lf
+.gitmodules      text eol=lf
+
+
+## Documentation Files
+######################
+*.md       text
+*.txt      text
+LICENSE*   text
+
+
+## Binary files
+###############
+*.app     binary
+*.dll     binary
+*.dylib   binary
+*.exe     binary
+*.out     binary
+*.so      binary
+
+# EOF #

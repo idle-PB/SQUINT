@@ -1,0 +1,23 @@
+####################################################
+#  SQUINT Sparse Quad Union Indexed Nibble Trie:   #
+#  https://github.com/idle-PB/SQUINT               #
+####################################################
+
+dist: trusty
+
+git:
+  depth: false
+
+install:
+  - npm install -g eclint
+
+script:
+  # =======================
+  # Source Files Validation
+  # =======================
+  # 1. Check PureBasic sources for IDE Settings.
+  # 2. Check PureBasic sources for trailing whitespace.
+  # 3. Validate EditorConfig code styles via EClint:
+  #      https://editorconfig.org
+  #      https://www.npmjs.com/package/eclint
+  - bash ./validate.sh
