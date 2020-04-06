@@ -1,4 +1,6 @@
-﻿IncludeFile "Squint.pbi"
+﻿;AutoComplete example 
+
+IncludeFile "Squint.pbi"
 
 UseModule Squint 
 EnableExplicit 
@@ -6,9 +8,7 @@ EnableExplicit
 #Auto_Get =1
 #Auto_Enum =2 
 
-Global TmpPath.s = GetTemporaryDirectory() +"en-GB.dic"
 Global *squint.iSquint = Squint_New()   
-
 Global index,result
 Global *buf = AllocateMemory(1024) 
 Global itemsize=1024*1024
@@ -119,15 +119,7 @@ Procedure ScintillaCallBack(Gadget, *scinotify.SCNotification)
   
 EndProcedure
 
-InitNetwork()
-If FileSize(TmpPath) > 0 
-  wordcount = loadDicfile(TmpPath,*squint)
-ElseIf ReceiveHTTPFile("https://raw.githubusercontent.com/marcoagpinto/aoo-mozilla-en-dict/master/en_GB%20(Marco%20Pinto)/en-GB.dic",TmpPath)
-  wordcount = loadDicfile(TmpPath,*squint)
-Else
-  MessageRequester("OOPS","failed to download")
-  End
-EndIf    
+wordcount = loadDicfile("./words.txt",*squint)
 
 If OpenWindow(0, 0, 0, 800, 600, "ScintillaGadget", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   

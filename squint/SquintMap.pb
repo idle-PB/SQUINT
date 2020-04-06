@@ -7,7 +7,7 @@ UseModule SQUINT
 
 Global mode = #PB_UTF8 
 
-Procedure CBSquint(*key)
+Procedure CBSquint(*key,*data)
   PrintN(PeekS(*key,-1,mode))
 EndProcedure  
 
@@ -28,7 +28,6 @@ Procedure EnumMap(Map mp(),key.s,len,mode)
 EndProcedure   
 
 Global *mt.squint = Squint_New() 
-Global TmpPath.s = GetTemporaryDirectory() +"en-GB.dic"
 Global Dim inp.i(90000)  
 Global NewMap mp.i(90000)
 Global AddTimeSquint.l, AddTimeMap.l,GetTimeSquint.l,GetTimeMap.l  
@@ -43,10 +42,6 @@ Procedure LoadDicFile(Dicfile.s)
     fm = ReadStringFormat(fn)
     While Not Eof(fn)
       word = ReadString(fn,fm,-1)
-      pos = FindString(word,"/")
-      If pos > 0
-        word = Left(word,pos-1)
-      EndIf
       word = LCase(word)
       If mode = #PB_Unicode
         *mem = AllocateMemory(StringByteLength(word)+1)
@@ -62,15 +57,9 @@ Procedure LoadDicFile(Dicfile.s)
   ProcedureReturn count
 EndProcedure
 
-InitNetwork()
-If FileSize(TmpPath) > 0 
-  ct = loadDicfile(TmpPath)
-ElseIf ReceiveHTTPFile("https://raw.githubusercontent.com/marcoagpinto/aoo-mozilla-en-dict/master/en_GB%20(Marco%20Pinto)/en-GB.dic",TmpPath)
-  ct = loadDicfile(TmpPath)
-Else
-  MessageRequester("OOPS","failed to download")
-  End
-EndIf    
+ct = loadDicfile("./words.txt")
+
+PrintN(Str(ct))
 
 For b = 0 To 15 
   
