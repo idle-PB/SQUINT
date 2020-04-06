@@ -22,7 +22,7 @@ Procedure ClearItems()
   FillMemory(*items,itemsize,0) 
 EndProcedure  
 
-Procedure CBSquint(*key)
+Procedure CBSquint(*key,*userdata)
   Protected out.s,len 
   len = MemorySize(*key)-1
   If (itempos + len + 1) < MemorySize(*items) 
