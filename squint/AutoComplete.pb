@@ -102,7 +102,7 @@ Procedure ScintillaCallBack(Gadget, *scinotify.SCNotification)
           If pos > 1 
             Auto_state = #Auto_Get 
             ClearItems()
-            *squint\Enum(*buf,pos+1,@CBSquint(),0,#PB_UTF8)
+            *squint\Enum(*buf,pos+1,@CBSquint(),0,0,#PB_UTF8)
             itempos=0
             If ScintillaSendMessage(0,#SCI_AUTOCACTIVE) = 0
               ScintillaSendMessage(0,#SCI_AUTOCSHOW,pos+1,*items)   
