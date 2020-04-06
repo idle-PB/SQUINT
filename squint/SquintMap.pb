@@ -1,42 +1,42 @@
-﻿;example benchmarking against a map. 
-;compile as console and turn debugger off 
+﻿;example benchmarking against a map.
+;compile as console and turn debugger off
 
 IncludeFile "Squint.pbi"
 
-UseModule SQUINT 
+UseModule SQUINT
 
-Global mode = #PB_UTF8 
+Global mode = #PB_UTF8
 
 Procedure CBSquint(*key,*data)
   PrintN(PeekS(*key,-1,mode))
-EndProcedure  
+EndProcedure
 
-Procedure EnumMap(Map mp(),key.s,len,mode) 
-  Protected NewList items.s() 
+Procedure EnumMap(Map mp(),key.s,len,mode)
+  Protected NewList items.s()
   Protected word.s
-  ForEach mp() 
+  ForEach mp()
     word = PeekS(mp(),-1,mode)
-    If Left(word,len) = key 
-      AddElement(items()) 
-      items() = word 
-    EndIf 
-  Next   
-  SortList(items(),#PB_Sort_Ascending) 
-  ForEach items() 
-    x.s = items() 
-  Next 
-EndProcedure   
+    If Left(word,len) = key
+      AddElement(items())
+      items() = word
+    EndIf
+  Next
+  SortList(items(),#PB_Sort_Ascending)
+  ForEach items()
+    x.s = items()
+  Next
+EndProcedure
 
-Global *mt.squint = Squint_New() 
-Global Dim inp.i(90000)  
+Global *mt.squint = Squint_New()
+Global Dim inp.i(90000)
 Global NewMap mp.i(90000)
-Global AddTimeSquint.l, AddTimeMap.l,GetTimeSquint.l,GetTimeMap.l  
-Global len,st,et,b 
+Global AddTimeSquint.l, AddTimeMap.l,GetTimeSquint.l,GetTimeMap.l
+Global len,st,et,b
 
-OpenConsole() 
+OpenConsole()
 
 Procedure LoadDicFile(Dicfile.s)
-  Protected fn,fm,pos,word.s,count,*mem  
+  Protected fn,fm,pos,word.s,count,*mem
   fn = ReadFile(#PB_Any,Dicfile)
   If fn
     fm = ReadStringFormat(fn)
@@ -45,11 +45,11 @@ Procedure LoadDicFile(Dicfile.s)
       word = LCase(word)
       If mode = #PB_Unicode
         *mem = AllocateMemory(StringByteLength(word)+1)
-        PokeS(*mem,word,StringByteLength(word),#PB_Unicode) 
+        PokeS(*mem,word,StringByteLength(word),#PB_Unicode)
         inp(count) = *mem
-      Else   
+      Else
         inp(count) = UTF8(word)
-      EndIf   
+      EndIf
       count+1
     Wend
     CloseFile(fn)
@@ -61,104 +61,104 @@ ct = loadDicfile("./words.txt")
 
 PrintN(Str(ct))
 
-For b = 0 To 15 
-  
-  Squint_Free(*mt) 
-  *mt.squint = Squint_New() 
-  st = ElapsedMilliseconds() 
-  For  a = 0 To ct-1  
+For b = 0 To 15
+
+  Squint_Free(*mt)
+  *mt.squint = Squint_New()
+  st = ElapsedMilliseconds()
+  For  a = 0 To ct-1
     Squint_Set(*mt,inp(a),MemorySize(inp(a)),inp(a),mode)
-  Next 
-  et = ElapsedMilliseconds() 
-  AddTimeSquint = (et-st) 
-  
+  Next
+  et = ElapsedMilliseconds()
+  AddTimeSquint = (et-st)
+
   FreeMap(Mp())
   NewMap mp.i(ct)
-  st = ElapsedMilliseconds() 
-  For  a = 0 To ct-1 
+  st = ElapsedMilliseconds()
+  For  a = 0 To ct-1
     mp(PeekS(inp(a),-1,mode)) = inp(a)
-  Next 
-  et = ElapsedMilliseconds() 
-  AddTimeMap = (et-st)      
-  
-  st = ElapsedMilliseconds()  
+  Next
+  et = ElapsedMilliseconds()
+  AddTimeMap = (et-st)
+
+  st = ElapsedMilliseconds()
   For a = 0 To ct-1
     out = Squint_Get(*mt,inp(a),MemorySize(inp(a)),mode)
-  Next  
-  et = ElapsedMilliseconds() 
+  Next
+  et = ElapsedMilliseconds()
   GetTimeSquint = et-st
-  
+
   st = ElapsedMilliseconds()
   For a = 0 To ct-1
     out = mp(PeekS(inp(a),-1,mode))
   Next
-  et = ElapsedMilliseconds() 
+  et = ElapsedMilliseconds()
   GetTimeMap = et-st
-  
+
   in.s = "cat"
-  st = ElapsedMilliseconds() 
-  For a = 0 To 15 
-    Squint_Enum(*mt,@in,StringByteLength(in),0,0,0,#PB_Unicode) 
-  Next 
+  st = ElapsedMilliseconds()
+  For a = 0 To 15
+    Squint_Enum(*mt,@in,StringByteLength(in),0,0,0,#PB_Unicode)
+  Next
   et= ElapsedMilliseconds()
-  SquintEnum = et -st 
-  
+  SquintEnum = et -st
+
   st= ElapsedMilliseconds()
-  For a = 0 To 15 
-    EnumMap(mp(),in,Len(in),mode) 
-  Next   
+  For a = 0 To 15
+    EnumMap(mp(),in,Len(in),mode)
+  Next
   et=ElapsedMilliseconds()
-  MapEnum = et-st 
-  
-  TSquintAdd + AddTimeSquint 
-  TmapAdd + AddtimeMap 
-  TSquintGet + GetTimeSquint 
+  MapEnum = et-st
+
+  TSquintAdd + AddTimeSquint
+  TmapAdd + AddtimeMap
+  TSquintGet + GetTimeSquint
   TmapGet + GetTimeMap
-  TSquintEnum + SquintEnum 
+  TSquintEnum + SquintEnum
   TMapEnum + MapEnum
-  
-  PrintN("Squint add time = " + Str((AddTimeSquint))) 
-  PrintN("Map add time = " + Str((AddTimeMap))) 
-  PrintN("Squint lookup = " + Str((GetTimeSquint))) 
-  PrintN("Map lookup = " + Str((GetTimeMap))) 
-  PrintN("Squint enum time = " + Str((SquintEnum))) 
-  PrintN("Map enum time = " + Str((MapEnum))) 
+
+  PrintN("Squint add time = " + Str((AddTimeSquint)))
+  PrintN("Map add time = " + Str((AddTimeMap)))
+  PrintN("Squint lookup = " + Str((GetTimeSquint)))
+  PrintN("Map lookup = " + Str((GetTimeMap)))
+  PrintN("Squint enum time = " + Str((SquintEnum)))
+  PrintN("Map enum time = " + Str((MapEnum)))
   PrintN("-----------------------------------------------")
-  
-Next 
+
+Next
 
 Global strGarbage.s ="ZZPluralAlpha"
 PrintN("testing garbage word " + Str(squint_get(*mt,@StrGarbage,StringByteLength(StrGarbage),#PB_Unicode)))
 PrintN("-----------------------------------------------")
-PrintN("Enum from cat") 
+PrintN("Enum from cat")
 in.s = "cat"
-Squint_Enum(*mt,@in,StringByteLength(in),@cbsquint(),0,0,#PB_Unicode) 
+Squint_Enum(*mt,@in,StringByteLength(in),@cbsquint(),0,0,#PB_Unicode)
 in.s = "catch"
-Squint_Delete(*mt,@in,StringByteLength(in),0,#PB_Unicode) 
+Squint_Delete(*mt,@in,StringByteLength(in),0,#PB_Unicode)
 PrintN("-----------------------------------------------")
 PrintN("Test Delete " + Str(squint_get(*mt,@in,StringByteLength(in),#PB_Unicode)))
 PrintN("-----------------------------------------------")
 in.s = "cat"
 PrintN("Before Prune of cat " + Str(*mt\count) + " nodes")
 Squint_Delete(*mt,@in,StringByteLength(in),1,#PB_Unicode)
-PrintN("After Prune of cat " + Str(*mt\count) + " nodes") 
-PrintN("Test Enum from cat") 
+PrintN("After Prune of cat " + Str(*mt\count) + " nodes")
+PrintN("Test Enum from cat")
 in.s = "cat"
-Squint_Enum(*mt,@in,StringByteLength(in),@cbsquint(),0,0,#PB_Unicode) 
+Squint_Enum(*mt,@in,StringByteLength(in),@cbsquint(),0,0,#PB_Unicode)
 PrintN("-----------------------------------------------")
 
-PrintN("Squint overhead " + StrF((*mt\size / *mt\datasize) / SizeOf(Integer)) + " Integers per Integer of Data overhead") 
-PrintN("Squint overhaed " + StrF((*mt\size / *mt\datasize)) + " Bytes per Byte of Data overhead") 
-PrintN("Squint Memory Size " + Str(*mt\size))  
+PrintN("Squint overhead " + StrF((*mt\size / *mt\datasize) / SizeOf(Integer)) + " Integers per Integer of Data overhead")
+PrintN("Squint overhaed " + StrF((*mt\size / *mt\datasize)) + " Bytes per Byte of Data overhead")
+PrintN("Squint Memory Size " + Str(*mt\size))
 PrintN("-----------------------------------------------")
 
-PrintN("Squint add ratio = " + StrF((TSquintAdd / TmapAdd))) 
-PrintN("Squint lookup ratio = " + StrF((TSquintGet / Tmapget))) 
-PrintN("Squint enum ratio = " + StrF((tSquintEnum / tmapEnum))) 
-PrintN("Map add ratio = " + StrF((TmapAdd / TSquintAdd))) 
-PrintN("Map lookup ratio = " + StrF((TmapGet / TSquintGet))) 
-PrintN("Map enum ratio  = " + StrF((tmapEnum / tSquintEnum))) 
+PrintN("Squint add ratio = " + StrF((TSquintAdd / TmapAdd)))
+PrintN("Squint lookup ratio = " + StrF((TSquintGet / Tmapget)))
+PrintN("Squint enum ratio = " + StrF((tSquintEnum / tmapEnum)))
+PrintN("Map add ratio = " + StrF((TmapAdd / TSquintAdd)))
+PrintN("Map lookup ratio = " + StrF((TmapGet / TSquintGet)))
+PrintN("Map enum ratio  = " + StrF((tmapEnum / tSquintEnum)))
 
-PrintN("Free " + Str(Squint_Free(*mt))) 
+PrintN("Free " + Str(Squint_Free(*mt)))
 
-Input() 
+Input()
