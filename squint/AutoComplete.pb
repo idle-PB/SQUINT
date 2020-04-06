@@ -48,10 +48,6 @@ Procedure LoadDicFile(Dicfile.s,*squint.ISquint)
     fm = ReadStringFormat(fn)
     While Not Eof(fn)
       word = ReadString(fn,fm,-1)
-      pos = FindString(word,"/")
-      If pos > 0
-        word = Left(word,pos-1)
-      EndIf
       inp(count) = UTF8(word) 
       word = LCase(word)
       *squint\Set(@word,StringByteLength(word),inp(count),#PB_Unicode)
