@@ -83,7 +83,7 @@ Procedure FindStrings(*squint.squint,*source,*keys,*items.FindStrings=0)
   
 EndProcedure 
 
-Procedure cbFindStringsFree(*key) 
+Procedure cbFindStringsFree(*key,*data) 
   FreeStructure(*key) 
 EndProcedure   
 
