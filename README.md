@@ -26,4 +26,4 @@ And both can be used together, although UTF8 is better for speed.
 
 Supports: Set, Get, Enum, Walk, Delete and Prune with a flag in Delete
 
-todo: add in a string buffer so value can be used For something Else and still return the keys and value
+todo: add in a string buffer so the value can be used for something else and still return the keys and value
