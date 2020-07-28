@@ -1,4 +1,11 @@
+![SQUINT Version][badge squint]&nbsp;&nbsp;
+![PureBasic Version][badge purebasic]&nbsp;&nbsp;
+[![MIT License][badge license]](./LICENSE)&nbsp;&nbsp;
+![Travis CI][badge travis]
+
 # SQUINT (Sparse Quad Union Indexed Nibble Trie)
+
+- https://github.com/idle-PB/SQUINT
 
 Squint is the result of realising that you can reduce a Trie from 256 nodes down to 16 nodes at only a cost of twice the lookup by indexing the key by nibbles.
 You then realise you can use a quad to store the indices of 16 offsets into a sparse array and then also reduce the structure down to two control words per node:
@@ -36,7 +43,15 @@ Supports: Set, Get, Enum, Walk, Delete and Prune with a flag in Delete.
 
 [QP Tries: Smaller and Faster Than Crit-Bit Tries]: https://dotat.at/prog/qp/blog-2015-10-04.html "Read full article, by Tony Finch"
 [Crit-Bit Trees]: https://cr.yp.To/critbit.html "Read full article, by D. J. Bernstein"
-
 [Trie]: https://en.wikipedia.org/wiki/Trie "See 'Trie' entry at Wikipedia"
+
+<!-- badges  -->
+
+[badge license]: https://img.shields.io/badge/license-MIT-00b5da "Released under the MIT License"
+[badge purebasic]: https://img.shields.io/badge/PureBasic-5.71-yellow "PureBasic 5.71 (x86/x64) — Linux/OS X/Windows"
+[badge squint]: https://img.shields.io/badge/SQUINT-1.0.2-yellow "SQUINT v1.0.2"
+[badge travis]: https://travis-ci.com/idle-PB/SQUINT.svg?branch=master "Travis CI: EditorConfig code styles consistency validation"
+
+<!-- people -->
 
 [Tony Finch]: https://github.com/fanf2 "View Tony Finch's GitHub profile"
