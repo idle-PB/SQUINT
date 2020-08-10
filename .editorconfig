@@ -1,7 +1,7 @@
-#####################################################
-#  PureBasic OpenSource Projects:                   #
-#  https://github.com/fantaisie-software/purebasic  #
-#####################################################
+####################################################
+#  SQUINT Sparse Quad Union Indexed Nibble Trie:   #
+#  https://github.com/idle-PB/SQUINT               #
+####################################################
 
 root = true
 
@@ -52,5 +52,22 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+
+## Plain-Text Files
+###################
+[*.txt]
+indent_style = space
+indent_size = unset
+end_of_line = unset
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+
+[LICENSE]
+indent_size = unset
+indent_style = space
+end_of_line = unset
+trim_trailing_whitespace = true
+insert_final_newline = true
 
 # EOF #
